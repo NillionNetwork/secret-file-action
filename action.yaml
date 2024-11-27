@@ -1,0 +1,17 @@
+name: Secret File
+description: Dumps a base64 encoded file in a secret env var to a file
+
+inputs:
+  secret:
+    description: 'The secret env var containing the base64 encoded file'
+    required: true
+  file:
+    description: 'File to dump the base64 encoded secret to'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - shell: bash
+      run: |
+        mkdir -p "$(dirname "${{ inputs.file }}")"
+        echo "${{ inputs.secret }}" | base64 -d > "${{ inputs.file }}"
